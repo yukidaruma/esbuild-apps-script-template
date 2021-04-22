@@ -20,6 +20,7 @@ console.table({
 const buildOptions = {
   entryPoints: ['./src/main.ts'],
   bundle: true,
+  target: 'es2015', // Lowers target to support ESNext syntax
 
   banner: { js: `function ${ENTRYPOINT_FUNC_NAME}() {` },
   footer: { js: '}' },
