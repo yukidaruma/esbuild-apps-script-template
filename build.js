@@ -1,4 +1,6 @@
 const { build: runBuild } = require('esbuild');
+const dotenv = require('dotenv');
+const { parsed: loadedEnvs } = dotenv.config();
 
 const ENTRYPOINT_FUNC_NAME = 'myFunction';
 
@@ -27,6 +29,14 @@ const buildOptions = {
 
   define: {
     DEBUG: debug,
+
+    // Replace `process.env.FOO` with variables written in `.env` file
+    ...Object.fromEntries(
+      Object.entries(loadedEnvs ?? {}).map(([key, value]) => [
+        `process.env.${key}`,
+        JSON.stringify(value),
+      ]),
+    ),
   },
   outfile: './build/main.js',
   watch: watch,
